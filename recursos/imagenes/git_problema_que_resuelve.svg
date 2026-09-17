@@ -1,0 +1,58 @@
+<svg viewBox="0 0 760 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Comparación entre trabajar sin control de versiones y trabajar con Git">
+  <defs>
+    <marker id="flecha-roja" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a4342a"/>
+    </marker>
+    <marker id="flecha-azul" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0a3161"/>
+    </marker>
+  </defs>
+
+  <!-- Panel izquierdo: sin control de versiones -->
+  <rect x="10" y="10" width="350" height="420" rx="12" fill="#fbeceb" stroke="#a4342a" stroke-width="2"/>
+  <text x="185" y="42" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="17" font-weight="700" fill="#a4342a">Sin control de versiones</text>
+
+  <rect x="40" y="70" width="290" height="46" rx="6" fill="#ffffff" stroke="#a4342a" stroke-width="1.5"/>
+  <text x="185" y="98" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="14" fill="#1c1f24">proyecto_final.zip</text>
+
+  <line x1="185" y1="116" x2="185" y2="134" stroke="#a4342a" stroke-width="2" marker-end="url(#flecha-roja)"/>
+
+  <rect x="40" y="136" width="290" height="46" rx="6" fill="#ffffff" stroke="#a4342a" stroke-width="1.5"/>
+  <text x="185" y="164" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="14" fill="#1c1f24">proyecto_final_v2.zip</text>
+
+  <line x1="185" y1="182" x2="185" y2="200" stroke="#a4342a" stroke-width="2" marker-end="url(#flecha-roja)"/>
+
+  <rect x="25" y="202" width="320" height="46" rx="6" fill="#ffffff" stroke="#a4342a" stroke-width="1.5"/>
+  <text x="185" y="230" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="13" fill="#1c1f24">proyecto_final_v2_CORREGIDO.zip</text>
+
+  <line x1="185" y1="248" x2="185" y2="266" stroke="#a4342a" stroke-width="2" marker-end="url(#flecha-roja)"/>
+
+  <rect x="15" y="268" width="340" height="46" rx="6" fill="#ffffff" stroke="#a4342a" stroke-width="1.5"/>
+  <text x="185" y="296" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="12.5" fill="#1c1f24">proyecto_final_v2_CORREGIDO_USAR_ESTE.zip</text>
+
+  <text x="185" y="345" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="30" fill="#a4342a">?</text>
+  <text x="185" y="380" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="13.5" fill="#1c1f24">¿Cuál es la versión</text>
+  <text x="185" y="400" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="13.5" fill="#1c1f24">correcta? ¿Qué cambió</text>
+  <text x="185" y="420" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="13.5" fill="#1c1f24">cada persona y cuándo?</text>
+
+  <!-- Panel derecho: con Git -->
+  <rect x="400" y="10" width="350" height="420" rx="12" fill="#eaf1fb" stroke="#0a3161" stroke-width="2"/>
+  <text x="575" y="42" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="17" font-weight="700" fill="#0a3161">Con Git</text>
+
+  <line x1="575" y1="75" x2="575" y2="400" stroke="#0a3161" stroke-width="2.5"/>
+
+  <circle cx="575" cy="90" r="8" fill="#0a3161"/>
+  <text x="600" y="94" font-family="Segoe UI, sans-serif" font-size="13" fill="#1c1f24">commit inicial</text>
+
+  <circle cx="575" cy="180" r="8" fill="#0a3161"/>
+  <text x="600" y="184" font-family="Segoe UI, sans-serif" font-size="13" fill="#1c1f24">agregar validación</text>
+
+  <circle cx="575" cy="270" r="8" fill="#0a3161"/>
+  <text x="600" y="274" font-family="Segoe UI, sans-serif" font-size="13" fill="#1c1f24">corregir error</text>
+
+  <circle cx="575" cy="360" r="9" fill="#c9a227"/>
+  <text x="600" y="364" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#1c1f24">HEAD → main</text>
+
+  <text x="575" y="408" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="13.5" fill="#1c1f24">Un historial único</text>
+  <text x="575" y="424" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="13.5" fill="#1c1f24">nada se pierde ni se sobrescribe</text>
+</svg>
