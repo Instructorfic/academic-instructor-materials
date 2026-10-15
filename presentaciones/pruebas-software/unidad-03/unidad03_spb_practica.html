@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SPB — Ambiente de pruebas</title>
+<!--
+  estado: BORRADOR
+  materia: Pruebas de Software (19506) — Unidad 03
+  uso: sistema bajo prueba de práctica para LAB01, LAB02 y LAB03
+       (ejecución manual de casos de caja negra y registro de evidencias).
+  caso: Sistema de Préstamos de Biblioteca (SPB), ficticio — CONTEXTO_UNIDAD.md §10.
+  IMPORTANTE (docentes): esta implementación contiene defectos sembrados de forma
+  intencional. Su descripción y la forma de detectarlos están en
+  material/unidad03_manual_profesor.md §10.7. No los corrijas aquí: son parte del
+  diseño de la práctica. Los estudiantes deben tratar esta página como caja negra.
+  Funciona sin conexión y sin instalar nada: basta con abrirla en un navegador.
+-->
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #ffffff; --text: #1d2330; --muted: #5b6475;
+    --line: #d5dae3; --accent: #0b2e5f; --ok: #1d6b36; --ok-bg: #e6f3ea;
+    --err: #9b1c1c; --err-bg: #fbeaea; --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  header { background: var(--accent); color: #fff; padding: 14px 20px; }
+  header h1 { margin: 0; font-size: 1.25rem; }
+  header p { margin: 2px 0 0; font-size: .85rem; opacity: .9; }
+  main { max-width: 1100px; margin: 0 auto; padding: 18px 16px 40px; }
+  .aviso { background: #fff8e1; border: 1px solid #e6c95c; border-radius: 6px;
+           padding: 10px 14px; margin-bottom: 16px; font-size: .9rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+  section { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+  section h2 { margin: 0 0 4px; font-size: 1.05rem; color: var(--accent); }
+  section .sub { margin: 0 0 12px; color: var(--muted); font-size: .85rem; }
+  label { display: block; font-weight: 600; font-size: .88rem; margin: 10px 0 4px; }
+  input[type=text], select { width: 100%; padding: 7px 9px; border: 1px solid var(--line);
+         border-radius: 5px; font: inherit; background: #fff; color: var(--text); }
+  .fila { display: flex; gap: 12px; flex-wrap: wrap; }
+  .fila > div { flex: 1 1 130px; }
+  button { margin-top: 14px; padding: 8px 14px; border: 0; border-radius: 5px;
+           background: var(--accent); color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+  button.sec { background: #e7ebf2; color: var(--text); }
+  .resultado { margin-top: 12px; padding: 9px 12px; border-radius: 5px; font-weight: 600; min-height: 1.2em; }
+  .resultado.ok { background: var(--ok-bg); color: var(--ok); }
+  .resultado.err { background: var(--err-bg); color: var(--err); }
+  .idcaso { background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+            padding: 12px 16px; margin-bottom: 16px; display: flex; gap: 12px; align-items: end; flex-wrap: wrap; }
+  .idcaso > div { flex: 1 1 260px; }
+  .tabla { overflow-x: auto; margin-top: 10px; }
+  table { border-collapse: collapse; width: 100%; font-size: .85rem; }
+  th, td { border: 1px solid var(--line); padding: 5px 7px; text-align: left; vertical-align: top; }
+  th { background: #eef1f6; }
+  textarea { width: 100%; min-height: 140px; font: .8rem/1.4 var(--mono); padding: 8px;
+             border: 1px solid var(--line); border-radius: 5px; }
+  .hint { color: var(--muted); font-size: .8rem; margin-top: 4px; }
+  footer { text-align: center; color: var(--muted); font-size: .8rem; margin-top: 24px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Sistema de Préstamos de Biblioteca (SPB)</h1>
+  <p id="version"></p>
+</header>
+<main>
+
+  <div class="aviso">
+    <strong>Ambiente de pruebas.</strong> Sistema ficticio para la Unidad 03 de Pruebas de Software.
+    Esta versión <strong>puede contener defectos</strong>: tu tarea es encontrarlos con los casos que
+    diseñaste. Trátala como <strong>caja negra</strong>: usa solo la interfaz y las reglas RN-01 a RN-04,
+    no el código fuente de la página. Ningún dato sale de tu navegador.
+  </div>
+
+  <div class="idcaso">
+    <div>
+      <label for="caso">ID del caso que vas a ejecutar</label>
+      <input type="text" id="caso" placeholder="Ejemplo: CP-RF01-03" autocomplete="off">
+      <div class="hint">Se guarda en el registro de ejecución junto con la fecha, la versión, los datos y el resultado.</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <section aria-labelledby="t-prestamo">
+      <h2 id="t-prestamo">RF-01 — Registrar préstamo</h2>
+      <p class="sub">Reglas RN-01, RN-02 y RN-03.</p>
+      <div class="fila">
+        <div>
+          <label for="p-tipo">Tipo de usuario</label>
+          <select id="p-tipo">
+            <option value="ESTUDIANTE">ESTUDIANTE</option>
+            <option value="DOCENTE">DOCENTE</option>
+          </select>
+        </div>
+        <div>
+          <label for="p-vigente">¿Registro vigente?</label>
+          <select id="p-vigente"><option value="S">Sí</option><option value="N">No</option></select>
+        </div>
+        <div>
+          <label for="p-adeudo">¿Adeudo pendiente?</label>
+          <select id="p-adeudo"><option value="N">No</option><option value="S">Sí</option></select>
+        </div>
+      </div>
+      <div class="fila">
+        <div>
+          <label for="p-libros">Libros en préstamo actuales</label>
+          <input type="text" id="p-libros" inputmode="numeric" autocomplete="off">
+        </div>
+        <div>
+          <label for="p-dias">Días de préstamo solicitados</label>
+          <input type="text" id="p-dias" inputmode="numeric" autocomplete="off">
+        </div>
+      </div>
+      <button type="button" id="b-prestamo">Registrar préstamo</button>
+      <div class="resultado" id="r-prestamo" role="status" aria-live="polite"></div>
+    </section>
+
+    <section aria-labelledby="t-devolucion">
+      <h2 id="t-devolucion">RF-02 — Registrar devolución</h2>
+      <p class="sub">Regla RN-04 (cálculo de multa).</p>
+      <div class="fila">
+        <div>
+          <label for="d-tipo">Tipo de usuario</label>
+          <select id="d-tipo">
+            <option value="ESTUDIANTE">ESTUDIANTE</option>
+            <option value="DOCENTE">DOCENTE</option>
+          </select>
+        </div>
+        <div>
+          <label for="d-dias">Días de retraso</label>
+          <input type="text" id="d-dias" inputmode="numeric" autocomplete="off">
+        </div>
+      </div>
+      <button type="button" id="b-devolucion">Registrar devolución</button>
+      <div class="resultado" id="r-devolucion" role="status" aria-live="polite"></div>
+    </section>
+  </div>
+
+  <section style="margin-top:16px" aria-labelledby="t-registro">
+    <h2 id="t-registro">Registro de ejecución</h2>
+    <p class="sub">Cada ejecución queda registrada. Copia la tabla en Markdown a tu documento del laboratorio
+      y agrega tú el <strong>resultado esperado</strong> y el <strong>veredicto</strong> (pasa / falla / bloqueado).</p>
+    <div class="tabla">
+      <table>
+        <thead><tr><th>#</th><th>ID del caso</th><th>Fecha y hora</th><th>Operación</th><th>Datos de entrada</th><th>Resultado obtenido</th></tr></thead>
+        <tbody id="log"></tbody>
+      </table>
+    </div>
+    <label for="md">Registro en Markdown (selecciónalo y cópialo)</label>
+    <textarea id="md" readonly></textarea>
+    <button type="button" class="sec" id="b-limpiar">Limpiar registro</button>
+    <div class="hint">El registro se conserva en este navegador mientras no lo limpies. Para una evidencia de
+      pantalla, toma una captura donde se vean el ID del caso, los datos y el resultado.</div>
+  </section>
+
+  <footer>SPB — caso ilustrativo ficticio de la Unidad 03. No representa a ninguna biblioteca real.</footer>
+</main>
+
+<script>
+(function () {
+  var VERSION = "SPB 1.0-rc2 · ambiente de pruebas";
+  document.getElementById("version").textContent = VERSION;
+
+  function esEntero(t) { return /^-?\d+$/.test(t.trim()); }
+  function esNumero(t) { return t.trim() !== "" && !isNaN(Number(t.trim())); }
+
+  // RF-01 — Registrar préstamo (RN-01, RN-02, RN-03)
+  function registrarPrestamo(tipo, vigente, adeudo, librosTxt, diasTxt) {
+    if (!esEntero(librosTxt) || Number(librosTxt) < 0) {
+      return { ok: false, msg: "Rechazado: dato inválido (libros en préstamo)" };
+    }
+    var libros = Number(librosTxt);
+    if (!esNumero(diasTxt)) {
+      return { ok: false, msg: "Rechazado: dato inválido (días de préstamo)" };
+    }
+    var dias = Number(diasTxt.trim());
+    if (dias < 1 || dias > 14) {
+      return { ok: false, msg: "Rechazado: días fuera de rango" };
+    }
+    if (adeudo && !vigente) {
+      return { ok: false, msg: "Rechazado: adeudo pendiente" };
+    }
+    if (!vigente) {
+      return { ok: false, msg: "Rechazado: registro no vigente" };
+    }
+    if (adeudo) {
+      return { ok: false, msg: "Rechazado: adeudo pendiente" };
+    }
+    var permitido = (tipo === "DOCENTE") ? libros < 5 : libros <= 3;
+    if (!permitido) {
+      return { ok: false, msg: "Rechazado: límite de libros alcanzado" };
+    }
+    return { ok: true, msg: "Préstamo registrado por " + dias + " día(s)" };
+  }
+
+  // RF-02 — Registrar devolución (RN-04)
+  function calcularMulta(tipo, diasTxt) {
+    if (!esEntero(diasTxt)) {
+      return { ok: false, msg: "Rechazado: dato inválido (días de retraso)" };
+    }
+    var d = Number(diasTxt.trim());
+    if (d <= 0) { return { ok: true, msg: "Devolución registrada. Multa: 0 MXN" }; }
+    var tarifa = 5;
+    if (tipo === "DOCENTE") { tarifa = 3; }
+    var multa = d * 5;
+    if (multa > 100) { multa = 100; }
+    return { ok: true, msg: "Devolución registrada. Multa: " + multa + " MXN" };
+  }
+
+  // Registro de ejecución
+  var CLAVE = "spb-u03-registro";
+  var registro = [];
+  try { registro = JSON.parse(localStorage.getItem(CLAVE) || "[]"); } catch (e) { registro = []; }
+
+  function guardar() { try { localStorage.setItem(CLAVE, JSON.stringify(registro)); } catch (e) {} }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function md(s) { return String(s).replace(/\|/g, "\\|"); }
+  function ahora() {
+    var d = new Date(), p = function (n) { return String(n).padStart(2, "0"); };
+    return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()) + " " + p(d.getHours()) + ":" + p(d.getMinutes()) + ":" + p(d.getSeconds());
+  }
+  function pintar() {
+    var tb = document.getElementById("log"); tb.innerHTML = "";
+    var lineas = ["Versión: " + VERSION, "",
+      "| # | ID del caso | Fecha y hora | Operación | Datos de entrada | Resultado obtenido | Resultado esperado | Veredicto |",
+      "| ---: | --- | --- | --- | --- | --- | --- | --- |"];
+    registro.forEach(function (r, i) {
+      var tr = document.createElement("tr");
+      tr.innerHTML = "<td>" + (i + 1) + "</td><td>" + esc(r.caso) + "</td><td>" + esc(r.fecha) + "</td><td>" + esc(r.op) + "</td><td>" + esc(r.datos) + "</td><td>" + esc(r.res) + "</td>";
+      tb.appendChild(tr);
+      lineas.push("| " + (i + 1) + " | " + md(r.caso) + " | " + r.fecha + " | " + r.op + " | " + md(r.datos) + " | " + md(r.res) + " |  |  |");
+    });
+    document.getElementById("md").value = lineas.join("\n");
+  }
+  function anotar(op, datos, res) {
+    var caso = document.getElementById("caso").value.trim() || "(sin ID)";
+    registro.push({ caso: caso, fecha: ahora(), op: op, datos: datos, res: res });
+    guardar(); pintar();
+  }
+  function mostrar(id, r) {
+    var el = document.getElementById(id);
+    el.textContent = r.msg; el.className = "resultado " + (r.ok ? "ok" : "err");
+  }
+  function mostrarTexto(t) { return t.trim() === "" ? "(vacío)" : '"' + t + '"'; }
+
+  document.getElementById("b-prestamo").addEventListener("click", function () {
+    var tipo = document.getElementById("p-tipo").value;
+    var vig = document.getElementById("p-vigente").value === "S";
+    var ade = document.getElementById("p-adeudo").value === "S";
+    var lib = document.getElementById("p-libros").value;
+    var dia = document.getElementById("p-dias").value;
+    var r = registrarPrestamo(tipo, vig, ade, lib, dia);
+    mostrar("r-prestamo", r);
+    anotar("RF-01 Préstamo",
+      "tipo=" + tipo + "; vigente=" + (vig ? "Sí" : "No") + "; adeudo=" + (ade ? "Sí" : "No") +
+      "; libros=" + mostrarTexto(lib) + "; días=" + mostrarTexto(dia), r.msg);
+  });
+
+  document.getElementById("b-devolucion").addEventListener("click", function () {
+    var tipo = document.getElementById("d-tipo").value;
+    var dia = document.getElementById("d-dias").value;
+    var r = calcularMulta(tipo, dia);
+    mostrar("r-devolucion", r);
+    anotar("RF-02 Devolución", "tipo=" + tipo + "; díasRetraso=" + mostrarTexto(dia), r.msg);
+  });
+
+  document.getElementById("b-limpiar").addEventListener("click", function () {
+    registro = []; guardar(); pintar();
+  });
+
+  pintar();
+})();
+</script>
+</body>
+</html>
